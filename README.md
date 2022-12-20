@@ -22,8 +22,8 @@ That last command will:
 1. look for **python 3.10.x** in your PATH
 1. create virtualenv in `EZVENV_TARGET` in deterministic format, in our example its gonna be
     - `/Users/me/Virtualenvs/Projects-myproject-x86_64-py3.10.9`
-1. create `,venv3.9.10` file in your project directory, which is an easy way to activate your venv like
-    - `source ,venv3.9.10`
+1. create `,venv3.10.9` file in your project directory, which is an easy way to activate your venv like
+    - `source ,venv3.10.9`
 
 ## 1. Settings
 
