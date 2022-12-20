@@ -2,6 +2,12 @@
 
 Create all virtual environments in a single, centralized directory.
 
+**WHY?**
+
+- From time to time I feel like I want to delete all unused venvs but its annoying to traverse all projects and look for ".venv*" dirs. So its nice to have them all in one place.
+- Also, I can have running Time Machine and avoid backing up (by ignoring a single dir) all python virtual envs!
+- And on top of that, I can quickly decide if I want Arm64 venv or x64 venv (which has better support, but runs slower via Rosetta).
+
 ## Usage
 
 ```sh
@@ -11,10 +17,10 @@ cd ~/Projects/myproject
 ezenv python3.10
 ```
 
-Command will:
+That last command will:
 
 1. look for **python 3.10.x** in your PATH
-1. create virtualenv in `EZVENV_TARGET` in deterministic format, in our example to
+1. create virtualenv in `EZVENV_TARGET` in deterministic format, in our example its gonna be
     - `/Users/me/Virtualenvs/Projects-myproject-x86_64-py3.10.9`
 1. create `,venv3.9.10` file in your project directory, which is an easy way to activate your venv like
     - `source ,venv3.9.10`
@@ -34,14 +40,14 @@ Tell **EZenv** where to save your virtual envs. Directory must exist.
 
 ### 1.2 `EZVENV_SHELL` (optional)
 
-Tell **EZenv** which shell you are using. Possible options are:
+Tell **EZenv** which shell you are using. It will adjust `,venvX.Y.Z` file. Possible options are:
 
 1. `SH`
     - default, in case you use `sh`, `bash`, `zsh` and similar
 1. `FISH`
     - in case you use fish shell
 1. `PS`
-    - in case you use PowerShell
+    - in case you use PowerShell 🤷🏻‍♂️
 1. `CSH`
     - in case you use C shell
 
