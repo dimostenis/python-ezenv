@@ -19,7 +19,7 @@ Command will:
 1. create `,venv3.9.10` file in your project directory, which is an easy way to activate your venv like
     - `source ,venv3.9.10`
 
-## 1. Settings
+## 1. Settings
 
 Set env vars:
 
