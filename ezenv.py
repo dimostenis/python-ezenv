@@ -25,21 +25,31 @@ class Shell(Enum):
     FISH = ".fish"
 
 
-def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
-    # load settings via env vars
-    ezenv_shell: str = os.getenv("EZENV_SHELL", "sh")
-    ezenv_target: str = os.getenv("EZENV_TARGET", "")
-
-    # check settings
+def get_shell() -> Shell:
+    var: str = os.getenv("EZENV_SHELL", "sh")
     try:
-        my_shell = getattr(Shell, ezenv_shell.upper())
+        shell = getattr(Shell, var.upper())
     except AttributeError:
-        raise SystemExit(
-            f" :: ERROR :: '{ezenv_shell}' is not allowed value for EZENV_SHELL."
-        )
-    my_target = Path(ezenv_target)
-    if not my_target.exists():
-        raise SystemExit(f" :: ERROR :: '{ezenv_target}' does not exist.")
+        raise SystemExit(f" :: ERROR :: '{var}' is not allowed value for EZENV_SHELL.")
+
+    return shell
+
+
+def get_target() -> Path:
+    var: str | None = os.getenv("EZENV_TARGET")
+    if not var:
+        raise SystemExit(" :: ERROR :: Set EZENV_TARGET environment variable.")
+
+    target = Path(var)
+    if not target.exists():
+        raise SystemExit(f" :: ERROR :: '{var}' does not exist.")
+
+    return target
+
+
+def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
+    target = get_target()
+    shell = get_shell()
 
     # find all interpreters
     interpreters: list[str] = (
@@ -86,7 +96,7 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
     p_dashed: str = "-".join(p.parts)
 
     # $VENVS/foo-bar-py3.10.7
-    outdir: Path = my_target / f"{p_dashed}__{arch.name.lower()}-py{python_ver}"
+    outdir: Path = target / f"{p_dashed}__{arch.name.lower()}-py{python_ver}"
     if outdir.exists():
         msg: str = f"""\
             Folder '{outdir}' exists.
@@ -111,8 +121,10 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
     print(f" :: virtualenv {' '.join(cli_args)}")
 
     # activation script, use as: "source ,venvX.Y.Z"
-    text = f"source {outdir}/bin/activate{my_shell.value}\n"
-    Path(f",venv{python_ver}").write_text(text)
+    activation_script: str = f",venv{python_ver}"
+    if arch != Arch.X86_64:
+        activation_script = f"{activation_script}-{arch.value}"
+    Path(activation_script).write_text(f"source {outdir}/bin/activate{shell.value}\n")
 
     return 0
 
