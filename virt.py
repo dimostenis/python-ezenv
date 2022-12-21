@@ -111,22 +111,26 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
     print(f" :: virtualenv {' '.join(cli_args)}")
 
     # activation script, use as: "source ,venvX.Y.Z"
-    Path(f",venv{python_ver}").write_text(
-        f"source {outdir}/bin/activate{my_shell.value}\n"
-    )
+    text = f"source {outdir}/bin/activate{my_shell.value}\n"
+    Path(f",venv{python_ver}").write_text(text)
 
     return 0
 
 
 def parse_args() -> argparse.Namespace:
+
+    DEFAULT_ARCH: str = "intel"
+
     parser = argparse.ArgumentParser()
     parser.add_argument("python")
     parser.add_argument(
         "--arch",
-        type=Arch,
+        type=str,
         choices=[e.value for e in Arch],
-        help="ask EZenv to find python intepreter of given architecture",
+        default=DEFAULT_ARCH,
+        help=f"ask EZenv to find python intepreter of given architecture, default={DEFAULT_ARCH}",
     )
+
     return parser.parse_args()
 
 
@@ -134,7 +138,7 @@ def cli() -> NoReturn:
     args: argparse.Namespace = parse_args()
     ret: int = 1
     try:
-        ret = main(python=args.python, arch=args.arch)
+        ret = main(python=args.python, arch=Arch(args.arch))
     except KeyboardInterrupt:
         raise SystemExit("Exit")
 
