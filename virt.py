@@ -128,7 +128,7 @@ def parse_args() -> argparse.Namespace:
         type=str,
         choices=[e.value for e in Arch],
         default=DEFAULT_ARCH,
-        help=f"ask EZenv to find python intepreter of given architecture, default={DEFAULT_ARCH}",
+        help=f"ask EZenv to find python intepreter of given architecture, default={DEFAULT_ARCH}",  # noqa
     )
 
     return parser.parse_args()
