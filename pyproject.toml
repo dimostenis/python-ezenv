@@ -9,7 +9,7 @@ authors = [{ name = "dimsi", email = "dimosh3k@gmail.com" }]
 dev = ["black", "pip-tools"]
 
 [project.scripts]
-ezenv = "virt:cli"
+ezenv = "ezenv:cli"
 
 [tool.isort]
 profile = "black"

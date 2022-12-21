@@ -79,14 +79,14 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
 
     print(f" :: found {exe} (arch {arch.name})")
 
-    # /Users/dimsi/foo/bar -> foo/bar
+    # /Users/dimsi/foo/bar -> foo/bar
     p: Path = Path(".").absolute().relative_to(Path.home())
 
-    # foo/bar -> foo-bar
+    # foo/bar -> foo-bar
     p_dashed: str = "-".join(p.parts)
 
     # $VENVS/foo-bar-py3.10.7
-    outdir: Path = my_target / f"{p_dashed}-py{arch.name.lower()}-{python_ver}"
+    outdir: Path = my_target / f"{p_dashed}__{arch.name.lower()}-py{python_ver}"
     if outdir.exists():
         msg: str = f"""\
             Folder '{outdir}' exists.
