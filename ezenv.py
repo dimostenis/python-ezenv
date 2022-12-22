@@ -78,7 +78,7 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
                 arch_found = True
                 break
         if not arch_found:
-            msg = f" :: ERROR :: Python interpreter with arch {arch.value} not found"
+            msg = f" :: ERROR :: Python interpreter {python}/{arch.value} not found"
             raise SystemExit(msg)
 
     # get info about what python its gonna be used

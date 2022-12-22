@@ -2,11 +2,13 @@
 
 Create all virtual environments in a single, centralized directory.
 
+Uses https://virtualenv.pypa.io/en/latest/ (which is also the only dependency).
+
 **WHY?**
 
 - From time to time I feel like I want to delete all unused venvs but its annoying to traverse all projects and look for ".venv*" dirs. So its nice to have them all in one place.
 - Also, I can have running Time Machine and avoid backing up (by ignoring a single dir) all python virtual envs!
-- And on top of that, I can quickly decide if I want Arm64 venv or x64 venv (which has better support, but runs slower via Rosetta).
+- And on top of that, I can quickly decide if I want Arm64 venv or x86 venv (which has better support, but runs slower via Rosetta).
 
 ## Usage
 
