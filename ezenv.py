@@ -58,6 +58,15 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
         .strip()
         .split("\n")
     )
+
+    # scan also pythons created manually in target folder
+    existing = ("pyconda", "pymamba")
+    version = python.partition("python")[2]
+    for e in existing:
+        pycondas = target.glob(f"*{e}{version}*")
+        for pyconda in pycondas:
+            interpreters.append(f'{pyconda / "bin" / "python"}')
+
     if not interpreters:
         raise SystemExit(f" :: ERROR :: No interpreters found for '{python}'")
 
@@ -66,7 +75,7 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
         # look for "arm64" intepreter(s) only on MacOS, else its redundant
         arch_found: bool = False
         now_in_use: tuple[str, ...] = Path(sys.executable).parts[:-1]
-        for exe in interpreters:
+        for exe in list(set(interpreters)):
             if Path(exe).parts[:-1] == now_in_use:
                 continue  # skip THIS env which is used for running this module
             if (
@@ -92,8 +101,9 @@ def main(python: str = "python", arch: Arch = Arch.X86_64) -> int:
     # /Users/dimsi/foo/bar -> foo/bar
     p: Path = Path(".").absolute().relative_to(Path.home())
 
-    # foo/bar -> foo-bar
+    # foo/bar baz/qux -> foo-bar_baz-qux
     p_dashed: str = "-".join(p.parts)
+    p_dashed = p_dashed.replace(" ", "_")  # spaces, bah
 
     # $VENVS/foo-bar-py3.10.7
     outdir: Path = target / f"{p_dashed}__{arch.name.lower()}-py{python_ver}"
